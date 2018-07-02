@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import dotenv from 'dotenv';
 import spWebWebsiteMenuSel from './controllers/sp_web_website_menu_sel';
 import spWebBuscaMenuSel from './controllers/sp_web_busca_home_sel';
 import spWebBuscaMaisVendidosSel from './controllers/sp_web_busca_maisvendidos_sel';
@@ -6,27 +7,41 @@ import spWebsiteUrlSel from './controllers/sp_website_url_sel';
 import spWebBuscaLandingpageSel from './controllers/sp_web_busca_landingpage_sel';
 import spWebBuscaVerticalSel from './controllers/sp_web_busca_vertical_sel';
 
+dotenv.config();
+
 const router = Router();
+
+const domain = process.env.DOMAIN;
+const namespace = process.env.NAMESPACE;
 
 router.get('/', (req, res) => {
   res.send({
     apis: {
-      v1: { },
+      v1: {
+        Tsvmwebsite: [
+          `${domain}${namespace}Tsvmwebsite/sp_web_website_menu_sel`,
+          `${domain}${namespace}Tsvmwebsite/sp_web_busca_home_sel`,
+          `${domain}${namespace}Tsvmwebsite/sp_web_busca_ultimasentrada_sel`,
+          `${domain}${namespace}Tsvmwebsite/sp_web_busca_maisvisitados_sel`,
+          `${domain}${namespace}Tsvmwebsite/sp_web_busca_maisvendidos_sel`,
+          `${domain}${namespace}Tsvmwebsite/sp_website_url_sel`,
+          `${domain}${namespace}Tsvmwebsite/sp_web_busca_landingpage_sel`,
+          `${domain}${namespace}Tsvmwebsite/sp_web_busca_vertical_sel`,
+        ],
+      },
     },
   });
 });
 
-const namespace = '/api/v1/';
-
 // custom routers
 
-router.post(`${namespace}Tsvmwebsite/sp_web_website_menu_sel`, spWebWebsiteMenuSel);
-router.post(`${namespace}Tsvmwebsite/sp_web_busca_home_sel`, spWebBuscaMenuSel);
-router.post(`${namespace}Tsvmwebsite/sp_web_busca_ultimasentrada_sel`, spWebBuscaMenuSel);
-router.post(`${namespace}Tsvmwebsite/sp_web_busca_maisvisitados_sel`, spWebBuscaMaisVendidosSel);
-router.post(`${namespace}Tsvmwebsite/sp_web_busca_maisvendidos_sel`, spWebBuscaMaisVendidosSel);
-router.post(`${namespace}Tsvmwebsite/sp_website_url_sel`, spWebsiteUrlSel);
-router.post(`${namespace}Tsvmwebsite/sp_web_busca_landingpage_sel`, spWebBuscaLandingpageSel);
-router.post(`${namespace}Tsvmwebsite/sp_web_busca_vertical_sel`, spWebBuscaVerticalSel);
+router.all(`${namespace}Tsvmwebsite/sp_web_website_menu_sel`, spWebWebsiteMenuSel);
+router.all(`${namespace}Tsvmwebsite/sp_web_busca_home_sel`, spWebBuscaMenuSel);
+router.all(`${namespace}Tsvmwebsite/sp_web_busca_ultimasentrada_sel`, spWebBuscaMenuSel);
+router.all(`${namespace}Tsvmwebsite/sp_web_busca_maisvisitados_sel`, spWebBuscaMaisVendidosSel);
+router.all(`${namespace}Tsvmwebsite/sp_web_busca_maisvendidos_sel`, spWebBuscaMaisVendidosSel);
+router.all(`${namespace}Tsvmwebsite/sp_website_url_sel`, spWebsiteUrlSel);
+router.all(`${namespace}Tsvmwebsite/sp_web_busca_landingpage_sel`, spWebBuscaLandingpageSel);
+router.all(`${namespace}Tsvmwebsite/sp_web_busca_vertical_sel`, spWebBuscaVerticalSel);
 
 export default router;
