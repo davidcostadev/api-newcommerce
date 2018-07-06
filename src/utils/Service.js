@@ -2,7 +2,7 @@ import paginationParse from '../utils/pagination';
 import selector from '../utils/selector';
 import * as SelType from '../selectorTypes';
 import { EXCEPTION_NOT_FOUND, EXCEPTION_UNPROCESSABLE_ENTITY } from '../errors';
-import { getModelAlias, listDefaultOptions, clearData } from '../utils/model';
+import { getModelAlias, listDefaultOptions, clearData } from '../utils/database/model';
 
 const database = {};
 
