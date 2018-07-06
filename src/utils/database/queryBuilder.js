@@ -46,12 +46,20 @@ const toSql = sql => () => {
   return newSql.join('\n');
 };
 
+const order = sql => (field, direction = 'ASC') => (
+  query({
+    ...sql,
+    order: `ORDER BY ${field} ${direction}`,
+  })
+);
+
 const build = sql => () => sql;
 
 const query = (sql = {}) => ({
   select: select(sql),
   table: table(sql),
   where: where(sql),
+  order: order(sql),
   build: build(sql),
   toSql: toSql(sql),
 });

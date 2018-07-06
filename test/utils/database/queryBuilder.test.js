@@ -62,6 +62,22 @@ describe('Query Builder', () => {
     expect(sql.build().where).toEqual(whereExpect);
   });
 
+  it('order ASC', () => {
+    const sql = query()
+      .order('name');
+
+    expect(sql.build()).toHaveProperty('order');
+    expect(sql.build().order).toEqual('ORDER BY name ASC');
+  });
+
+  it('order DESC', () => {
+    const sql = query()
+      .order('name', 'DESC');
+
+    expect(sql.build()).toHaveProperty('order');
+    expect(sql.build().order).toEqual('ORDER BY name DESC');
+  });
+
   it('build', () => {
     const sql = query()
       .table('TBL_OFERTAS')
