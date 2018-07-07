@@ -1,5 +1,9 @@
 /* eslint no-use-before-define: "off" */
 
+const trateString = value => (
+  typeof value === 'string' ? `'${value}'` : value
+);
+
 const opAND = fields => Object.keys(fields)
   .map(field => opLogic(field, fields[field]))
   .join(' AND ');
@@ -8,9 +12,9 @@ const opOR = fields => Object.keys(fields)
   .map(field => opLogic(field, fields[field]))
   .join(' OR ');
 
-const opEQ = (field, value) => `${field} = ${value}`;
+const opEQ = (field, value) => `${field} = ${trateString(value)}`;
 
-const opNE = (field, value) => `${field} != ${value}`;
+const opNE = (field, value) => `${field} != ${trateString(value)}`;
 
 export const ops = {
   AND: 'AND',
@@ -26,8 +30,13 @@ const operations = {
   [ops.NE]: opNE,
 };
 
+const checkValue = value => (
+  typeof value === 'string' ||
+  typeof value === 'number'
+);
+
 const opLogic = (field, value) => {
-  if (typeof value === 'string') {
+  if (checkValue(value)) {
     return opEQ(field, value);
   }
 
