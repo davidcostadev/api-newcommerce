@@ -1,23 +1,28 @@
 import Firebird from 'node-firebird';
-import Table from './Table';
 
 class Database {
-  constructor(options, tables) {
+  constructor(options) {
     this.host = options.host;
     this.port = options.port;
     this.database = options.database;
+    this.user = options.user;
     this.password = options.password;
-
-    this.tables = tables;
+    this.logger = options.logger;
 
     this.db = null;
   }
 
   con() {
     return new Promise((resolve) => {
+      if (this.db) {
+        resolve(this.db);
+        return;
+      }
+
       const options = {
         host: this.host,
         port: this.port,
+        user: this.user,
         database: this.database,
         password: this.password,
       };
@@ -27,15 +32,9 @@ class Database {
 
         this.db = db;
 
-        this.setTables();
-
-        resolve(this);
+        resolve(db);
       });
     });
-  }
-
-  setTables() {
-    this.tables.map(tableName => new Table(tableName, this.db));
   }
 }
 

@@ -6,14 +6,18 @@ describe('Table', () => {
 
   beforeEach(() => {
     db = {
-      query: (sql, callback) => {
-        callback(null, {
-          id: 1,
-          name: 'name',
-        });
-      },
+      con: () => ({
+        query: (sql, callback) => {
+          callback(null, {
+            id: 1,
+            name: 'name',
+          });
+        },
+      }),
     };
-    TableOne = new Table('tbl_table', db);
+    TableOne = new Table({
+      tableName: 'tbl_table',
+    }, db);
   });
 
   describe('findAll', () => {
@@ -38,7 +42,7 @@ describe('Table', () => {
         select: ['id', 'name as abc'],
       });
 
-      expect(TableOne.lastSql).toBe('SELECT\n\tid, name as abc\nFROM\n\ttbl_table');
+      expect(TableOne.lastSql).toBe('SELECT\n\tid, name as "abc"\nFROM\n\ttbl_table');
     });
 
     it('with where filter', async () => {
@@ -50,7 +54,7 @@ describe('Table', () => {
       });
 
       expect(TableOne.lastSql).toBe('SELECT\n\t' +
-        'id, name as abc\nFROM\n\ttbl_table\n' +
+        'id, name as "abc"\nFROM\n\ttbl_table\n' +
         'WHERE\n\tid = 1');
     });
 
