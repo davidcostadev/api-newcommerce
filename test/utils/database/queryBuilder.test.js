@@ -5,13 +5,14 @@ describe('Query Builder', () => {
   const selectExpect = 'SELECT\n\tid, NAME as name, email';
   const tableExpect = 'FROM\n\tTBL_OFERTAS';
   const whereExpect = 'WHERE\n' +
-    '\t(name = David AND email != david@costa.com)\n' +
+    '\t(name = \'David\' AND email != \'david@costa.com\')\n' +
     'AND\n' +
-    '\t(name = David OR email = david@costa.com)\n' +
+    '\t(name = \'David\' OR email = \'david@costa.com\')\n' +
     'AND\n' +
-    '\t(name = Legal)\n' +
+    '\t(name = \'Legal\')\n' +
     'AND\n' +
     '\t(idade != 3)';
+  const orderExpect = 'ORDER BY name DESC';
 
   const whereProp = {
     [ops.AND]: {
@@ -40,7 +41,7 @@ describe('Query Builder', () => {
 
   it('select', () => {
     const sql = query()
-      .select('id', 'NAME as name ', 'email');
+      .select(['id', 'NAME as name ', 'email']);
 
     expect(sql.build()).toHaveProperty('select');
     expect(sql.build().select).toEqual(selectExpect);
@@ -81,7 +82,7 @@ describe('Query Builder', () => {
   it('build', () => {
     const sql = query()
       .table('TBL_OFERTAS')
-      .select('id', 'NAME as name ', 'email')
+      .select(['id', 'NAME as name ', 'email'])
       .where(whereProp)
       .build();
 
@@ -94,11 +95,12 @@ describe('Query Builder', () => {
 
   it('toSql', () => {
     const sql = query()
-      .select('id', 'NAME as name ', 'email')
+      .select(['id', 'NAME as name ', 'email'])
       .table('TBL_OFERTAS')
       .where(whereProp)
+      .order('name', 'DESC')
       .toSql();
 
-    expect(sql).toEqual(`${selectExpect}\n${tableExpect}\n${whereExpect}`);
+    expect(sql).toEqual(`${selectExpect}\n${tableExpect}\n${whereExpect}\n${orderExpect}`);
   });
 });
