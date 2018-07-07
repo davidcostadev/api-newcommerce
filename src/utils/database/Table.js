@@ -3,8 +3,10 @@
 import queryBuilder from './queryBuilder';
 
 class Table {
-  constructor(tableName, db) {
-    this.tableName = tableName;
+  constructor(tableDefinition, db) {
+    this.tableName = tableDefinition.tableName;
+    this.fields = tableDefinition.fields;
+
     this.db = db;
 
     this.lastSql = '';
@@ -21,12 +23,13 @@ class Table {
     if (select) {
       qb = qb.select(select);
     } else {
-      qb = qb.select();
+      qb = qb.select(this.fields);
     }
 
     if (where) {
       qb = qb.where(where);
     }
+
     if (order) {
       if (typeof order[1] !== 'undefined') {
         const [field, direction] = order;
@@ -39,13 +42,46 @@ class Table {
 
     this.lastSql = qb.toSql();
 
-    return new Promise((resolve) => {
-      this.db.query(this.lastSql, (err, result) => {
+    if (this.db.logger) {
+      console.log('DATABASE: ', this.lastSql);
+    }
+
+    return new Promise(async (resolve) => {
+      const con = await this.db.con();
+      con.query(this.lastSql, (err, result) => {
         if (err) throw err;
 
         resolve(result);
       });
     });
+  }
+
+  findAndCountAll({ where }) {
+    const qb = queryBuilder()
+      .table(this.tableName)
+      .select(['count(*)'])
+      .where(where);
+
+    this.lastSql = qb.toSql();
+
+    if (this.db.logger) {
+      console.log('DATABASE: ', this.lastSql);
+    }
+
+    return new Promise(async (resolve) => {
+      const con = await this.db.con();
+      con.query(this.lastSql, (err, result) => {
+        if (err) throw err;
+
+        resolve(result[0].COUNT);
+      });
+    });
+  }
+
+  static name(name) {
+    return name.split(' as ')
+      .reverse()
+      .find((cur, index) => index === 0);
   }
 }
 

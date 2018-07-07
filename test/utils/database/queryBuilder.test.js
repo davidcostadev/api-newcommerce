@@ -2,7 +2,7 @@ import query from '../../../src/utils/database/queryBuilder';
 import { ops } from '../../../src/utils/database/where';
 
 describe('Query Builder', () => {
-  const selectExpect = 'SELECT\n\tid, NAME as name, email';
+  const selectExpect = 'SELECT\n\tid, NAME as "name", email';
   const tableExpect = 'FROM\n\tTBL_OFERTAS';
   const whereExpect = 'WHERE\n' +
     '\t(name = \'David\' AND email != \'david@costa.com\')\n' +
