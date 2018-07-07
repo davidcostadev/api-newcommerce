@@ -13,7 +13,7 @@ const ifISAll = fields => (
   fields.length ? fieldsQuery(fields) : '*'
 );
 
-const select = sql => (...fields) => (
+const select = sql => (fields = []) => (
   query({
     ...sql,
     select: `SELECT\n\t${ifISAll(fields)}`,
@@ -32,26 +32,26 @@ const where = sql => fields => query({
   where: whereBuilder(fields),
 });
 
-const orderSql = [
-  'select',
-  'table',
-  'where',
-];
-
-const toSql = sql => () => {
-  const newSql = [];
-
-  orderSql.forEach(item => typeof sql[item] === 'undefined' || newSql.push(sql[item]));
-
-  return newSql.join('\n');
-};
-
 const order = sql => (field, direction = 'ASC') => (
   query({
     ...sql,
     order: `ORDER BY ${field} ${direction}`,
   })
 );
+
+const orderSql = [
+  'select',
+  'table',
+  'where',
+  'order',
+];
+
+const toSql = sql => () => {
+  const newSql = [];
+  orderSql.forEach(item => typeof sql[item] === 'undefined' || newSql.push(sql[item]));
+
+  return newSql.join('\n');
+};
 
 const build = sql => () => sql;
 

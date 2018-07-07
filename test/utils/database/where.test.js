@@ -29,11 +29,11 @@ describe('where', () => {
       },
     };
     expect(where(query)).toBe('WHERE\n' +
-      '\t(name = David AND email != david@costa.com)\n' +
+      '\t(name = \'David\' AND email != \'david@costa.com\')\n' +
       'AND\n' +
-      '\t(name = David OR email = david@costa.com)\n' +
+      '\t(name = \'David\' OR email = \'david@costa.com\')\n' +
       'AND\n' +
-      '\t(name = Legal)\n' +
+      '\t(name = \'Legal\')\n' +
       'AND\n' +
       '\t(idade != 3)');
   });
