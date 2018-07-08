@@ -47,3 +47,20 @@ export const clearData = (data, scheme) => {
 
   return clearItem(scheme)(data);
 };
+
+export const getField = (fields, key) => fields.find(field => field
+  .split(' as ').reverse().find((cur, index) => index === 0) === key)
+  .split(' as ').find((cur, index) => index === 0);
+
+export const revertAlias = (where, fields) => {
+  const newObj = {};
+  Object.keys(where).forEach((key) => {
+    if (typeof where[key] === 'object') {
+      revertAlias(where[key], fields);
+    } else {
+      newObj[getField(fields, key)] = where[key];
+    }
+  });
+
+  return newObj;
+};

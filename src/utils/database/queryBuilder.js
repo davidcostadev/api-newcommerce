@@ -16,10 +16,17 @@ const ifISAll = fields => (
   fields.length ? fieldsQuery(fields) : '*'
 );
 
+const first = sql => () => (
+  query({
+    ...sql,
+    first: 'SELECT',
+  })
+);
+
 const select = sql => (fields = []) => (
   query({
     ...sql,
-    select: `SELECT\n\t${ifISAll(fields)}`,
+    select: `\t${ifISAll(fields)}`,
   })
 );
 
@@ -42,7 +49,16 @@ const order = sql => (field, direction = 'ASC') => (
   })
 );
 
+const limit = sql => (quant = 30, page = 1) => (
+  query({
+    ...sql,
+    limit: `FIRST ${quant} SKIP ${(page - 1) * quant}`,
+  })
+);
+
 const orderSql = [
+  'first',
+  'limit',
   'select',
   'table',
   'where',
@@ -59,12 +75,14 @@ const toSql = sql => () => {
 const build = sql => () => sql;
 
 const query = (sql = {}) => ({
+  first: first(sql),
   select: select(sql),
   table: table(sql),
   where: where(sql),
+  limit: limit(sql),
   order: order(sql),
   build: build(sql),
   toSql: toSql(sql),
 });
 
-export default query;
+export default query().first;
