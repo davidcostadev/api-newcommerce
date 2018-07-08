@@ -7,6 +7,7 @@ import spWebsiteUrlSel from './controllers/sp_website_url_sel';
 import spWebBuscaLandingpageSel from './controllers/sp_web_busca_landingpage_sel';
 import spWebBuscaVerticalSel from './controllers/sp_web_busca_vertical_sel';
 import ProductImages from './controllers/ProductImages';
+import Offers from './controllers/Offers';
 
 dotenv.config();
 
@@ -28,7 +29,9 @@ router.get('/', (req, res) => {
           `${domain}${namespace}Tsvmwebsite/sp_website_url_sel`,
           `${domain}${namespace}Tsvmwebsite/sp_web_busca_landingpage_sel`,
           `${domain}${namespace}Tsvmwebsite/sp_web_busca_vertical_sel`,
-          `${domain}${namespace}productImages`,
+          `${domain}${namespace}offers`,
+          `${domain}${namespace}offers/:idOffer`,
+          `${domain}${namespace}products/:idProduct/images`,
         ],
       },
     },
@@ -47,5 +50,7 @@ router.all(`${namespace}Tsvmwebsite/sp_web_busca_landingpage_sel`, spWebBuscaLan
 router.all(`${namespace}Tsvmwebsite/sp_web_busca_vertical_sel`, spWebBuscaVerticalSel);
 
 router.get(`${namespace}products/:idProduct/images`, ProductImages.list);
+router.get(`${namespace}offers`, Offers.list);
+router.get(`${namespace}offers/:idOffer`, Offers.get);
 
 export default router;

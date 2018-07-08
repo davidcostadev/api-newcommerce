@@ -17,6 +17,10 @@ describe('Table', () => {
     };
     TableOne = new Table({
       tableName: 'tbl_table',
+      id: 'id',
+      fields: [
+        'id',
+      ],
     }, db);
   });
 
@@ -34,7 +38,7 @@ describe('Table', () => {
     it('findAll with empty args', async () => {
       await TableOne.findAll();
 
-      expect(TableOne.lastSql).toBe('SELECT\n\t*\nFROM\n\ttbl_table');
+      expect(TableOne.lastSql).toBe('SELECT\nFIRST 30 SKIP 0\n\tid\nFROM\n\ttbl_table');
     });
 
     it('with select fields', async () => {
@@ -42,7 +46,7 @@ describe('Table', () => {
         select: ['id', 'name as abc'],
       });
 
-      expect(TableOne.lastSql).toBe('SELECT\n\tid, name as "abc"\nFROM\n\ttbl_table');
+      expect(TableOne.lastSql).toBe('SELECT\nFIRST 30 SKIP 0\n\tid, name as "abc"\nFROM\n\ttbl_table');
     });
 
     it('with where filter', async () => {
@@ -53,7 +57,7 @@ describe('Table', () => {
         },
       });
 
-      expect(TableOne.lastSql).toBe('SELECT\n\t' +
+      expect(TableOne.lastSql).toBe('SELECT\nFIRST 30 SKIP 0\n\t' +
         'id, name as "abc"\nFROM\n\ttbl_table\n' +
         'WHERE\n\tid = 1');
     });
@@ -63,7 +67,7 @@ describe('Table', () => {
         order: ['id'],
       });
 
-      expect(TableOne.lastSql).toBe('SELECT\n\t*\nFROM\n\ttbl_table\nORDER BY id ASC');
+      expect(TableOne.lastSql).toBe('SELECT\nFIRST 30 SKIP 0\n\tid\nFROM\n\ttbl_table\nORDER BY id ASC');
     });
 
     it('with orders DESC', async () => {
@@ -71,7 +75,7 @@ describe('Table', () => {
         order: ['id', 'DESC'],
       });
 
-      expect(TableOne.lastSql).toBe('SELECT\n\t*\nFROM\n\ttbl_table\nORDER BY id DESC');
+      expect(TableOne.lastSql).toBe('SELECT\nFIRST 30 SKIP 0\n\tid\nFROM\n\ttbl_table\nORDER BY id DESC');
     });
   });
 });

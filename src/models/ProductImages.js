@@ -1,5 +1,6 @@
 const ProductImages = {
   tableName: 'TBL_PRODUTO_IMAGENS as ProductImages',
+  id: 'idImage',
   fields: [
     'ID_IMAGEM as idImage',
     'ID_POST as idPost',

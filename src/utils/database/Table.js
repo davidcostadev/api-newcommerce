@@ -1,11 +1,13 @@
 /* eslint prefer-destructuring: "off" */
 
 import queryBuilder from './queryBuilder';
+import { revertAlias, getField } from './model';
 
 class Table {
   constructor(tableDefinition, db) {
     this.tableName = tableDefinition.tableName;
     this.fields = tableDefinition.fields;
+    this.id = tableDefinition.id;
 
     this.db = db;
 
@@ -16,9 +18,12 @@ class Table {
     const select = query.select || null;
     const where = query.where || null;
     const order = query.order || null;
+    const limit = query.limit || 30;
+    const page = query.page || 1;
 
     let qb = queryBuilder()
-      .table(this.tableName);
+      .table(this.tableName)
+      .limit(limit, page);
 
     if (select) {
       qb = qb.select(select);
@@ -27,7 +32,7 @@ class Table {
     }
 
     if (where) {
-      qb = qb.where(where);
+      qb = qb.where(revertAlias(where, this.fields));
     }
 
     if (order) {
@@ -42,12 +47,11 @@ class Table {
 
     this.lastSql = qb.toSql();
 
-    if (this.db.logger) {
-      console.log('DATABASE: ', this.lastSql);
-    }
+    this.logger();
 
     return new Promise(async (resolve) => {
       const con = await this.db.con();
+
       con.query(this.lastSql, (err, result) => {
         if (err) throw err;
 
@@ -59,14 +63,12 @@ class Table {
   findAndCountAll({ where }) {
     const qb = queryBuilder()
       .table(this.tableName)
-      .select(['count(*)'])
-      .where(where);
+      .select([`count(${getField(this.fields, this.id)})`])
+      .where(revertAlias(where, this.fields));
 
     this.lastSql = qb.toSql();
 
-    if (this.db.logger) {
-      console.log('DATABASE: ', this.lastSql);
-    }
+    this.logger();
 
     return new Promise(async (resolve) => {
       const con = await this.db.con();
@@ -78,10 +80,45 @@ class Table {
     });
   }
 
+  findById(id, select = null) {
+    let qb = queryBuilder()
+      .table(this.tableName)
+      .where({
+        [getField(this.fields, this.id)]: id,
+      })
+      .limit(1);
+
+    if (select) {
+      qb = qb.select(select);
+    } else {
+      qb = qb.select(this.fields);
+    }
+
+    this.lastSql = qb.toSql();
+
+    this.logger();
+
+    return new Promise(async (resolve) => {
+      const con = await this.db.con();
+
+      con.query(this.lastSql, (err, result) => {
+        if (err) throw err;
+
+        resolve(result.find((cur, index) => index === 0));
+      });
+    });
+  }
+
   static name(name) {
     return name.split(' as ')
       .reverse()
       .find((cur, index) => index === 0);
+  }
+
+  logger() {
+    if (this.db.logger) {
+      console.log(`DATABASE: \`${this.lastSql}\``);
+    }
   }
 }
 
