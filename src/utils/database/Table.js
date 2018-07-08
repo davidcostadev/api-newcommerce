@@ -31,7 +31,7 @@ class Table {
       qb = qb.select(this.fields);
     }
 
-    if (where) {
+    if (where && Object.keys(where).length) {
       qb = qb.where(revertAlias(where, this.fields));
     }
 
@@ -61,10 +61,13 @@ class Table {
   }
 
   findAndCountAll({ where }) {
-    const qb = queryBuilder()
+    let qb = queryBuilder()
       .table(this.tableName)
-      .select([`count(${getField(this.fields, this.id)})`])
-      .where(revertAlias(where, this.fields));
+      .select([`count(${getField(this.fields, this.id)})`]);
+
+    if (where && Object.keys(where).length) {
+      qb = qb.where(revertAlias(where, this.fields));
+    }
 
     this.lastSql = qb.toSql();
 

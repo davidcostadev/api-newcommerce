@@ -16,6 +16,8 @@ const boolType = {
   validation: validate.bool,
 };
 
+export const idProjectType = numberType;
+
 export const nameSelType = stringType;
 
 export const emailSelType = stringType;
@@ -42,7 +44,7 @@ export const batchSelType = stringType;
 
 export const limitSelType = {
   ...numberType,
-  default: 100,
+  default: 30,
 };
 
 export const pageSelType = {

@@ -1,15 +1,24 @@
 import dotenv from 'dotenv';
+import selector from '../utils/selector';
 import { Offers } from '../models';
 import paginationParse from '../utils/pagination';
+import * as SelType from '../selectorTypes';
 
 dotenv.config();
 
 const list = async ({ query }, res) => {
-  const page = parseInt(query.page || 1, 10);
-  const limit = parseInt(query.limit || 30, 10);
-  const where = {
-    idProject: process.env.PROJECT_ID,
-  };
+  const {
+    page,
+    limit,
+  } = selector({
+    limit: SelType.limitSelType,
+    page: SelType.pageSelType,
+    idProject: SelType.idProjectType,
+  }, query);
+
+  const where = selector({
+    idProject: SelType.idProjectType,
+  }, query);
 
   try {
     const data = await Offers.findAll({ where, limit, page });
