@@ -46,6 +46,6 @@ router.all(`${namespace}Tsvmwebsite/sp_website_url_sel`, spWebsiteUrlSel);
 router.all(`${namespace}Tsvmwebsite/sp_web_busca_landingpage_sel`, spWebBuscaLandingpageSel);
 router.all(`${namespace}Tsvmwebsite/sp_web_busca_vertical_sel`, spWebBuscaVerticalSel);
 
-router.get(`${namespace}productImages/:idProduct`, ProductImages.list);
+router.get(`${namespace}products/:idProduct/images`, ProductImages.list);
 
 export default router;
