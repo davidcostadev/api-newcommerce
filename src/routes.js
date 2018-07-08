@@ -30,8 +30,8 @@ router.get('/', (req, res) => {
           `${domain}${namespace}Tsvmwebsite/sp_web_busca_landingpage_sel`,
           `${domain}${namespace}Tsvmwebsite/sp_web_busca_vertical_sel`,
           `${domain}${namespace}offers`,
-          `${domain}${namespace}offers/:idOffer`,
-          `${domain}${namespace}products/:idProduct/images`,
+          `${domain}${namespace}offers/:id`,
+          `${domain}${namespace}products/:id/images`,
         ],
       },
     },
@@ -49,8 +49,8 @@ router.all(`${namespace}Tsvmwebsite/sp_website_url_sel`, spWebsiteUrlSel);
 router.all(`${namespace}Tsvmwebsite/sp_web_busca_landingpage_sel`, spWebBuscaLandingpageSel);
 router.all(`${namespace}Tsvmwebsite/sp_web_busca_vertical_sel`, spWebBuscaVerticalSel);
 
-router.get(`${namespace}products/:idProduct/images`, ProductImages.list);
+router.get(`${namespace}products/:id/images`, ProductImages.list);
 router.get(`${namespace}offers`, Offers.list);
-router.get(`${namespace}offers/:idOffer`, Offers.get);
+router.get(`${namespace}offers/:id`, Offers.get);
 
 export default router;
