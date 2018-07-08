@@ -16,6 +16,8 @@ const boolType = {
   validation: validate.bool,
 };
 
+export const id = numberType;
+
 export const idProjectType = numberType;
 
 export const nameSelType = stringType;

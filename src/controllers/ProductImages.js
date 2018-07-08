@@ -1,15 +1,25 @@
+import selector from '../utils/selector';
 import { ProductImages } from '../models';
 import paginationParse from '../utils/pagination';
+import * as SelType from '../selectorTypes';
 
-const list = async ({ params }, res) => {
-  const page = 1;
-  const limit = 30;
-  const where = {
-    ID_PRODUTO: params.idProduct,
-  };
+const list = async ({ params, query }, res) => {
+  const {
+    page,
+    limit,
+  } = selector({
+    limit: SelType.limitSelType,
+    page: SelType.pageSelType,
+  }, query);
+
+  const where = selector({
+    idProduct: SelType.id,
+  }, {
+    idProduct: params.id,
+  });
 
   try {
-    const data = await ProductImages.findAll({ where });
+    const data = await ProductImages.findAll({ where, limit, page });
     const count = await ProductImages.findAndCountAll({ where });
     const pagination = paginationParse(count, page, limit);
 
