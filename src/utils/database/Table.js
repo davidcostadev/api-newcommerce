@@ -1,7 +1,7 @@
 /* eslint prefer-destructuring: "off" */
 
 import queryBuilder from './queryBuilder';
-import { revertAlias, getField } from './model';
+import { revertAlias, getField, trateResult } from './model';
 
 class Table {
   constructor(tableDefinition, db) {
@@ -52,10 +52,12 @@ class Table {
     return new Promise(async (resolve) => {
       const con = await this.db.con();
 
-      con.query(this.lastSql, (err, result) => {
+      con.query(this.lastSql, async (err, result) => {
         if (err) throw err;
 
-        resolve(result);
+        const newDate = await trateResult(result);
+
+        resolve(newDate);
       });
     });
   }

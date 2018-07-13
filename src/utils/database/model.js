@@ -64,3 +64,46 @@ export const revertAlias = (where, fields) => {
 
   return newObj;
 };
+
+const getBlobValue = (key, blob) => new Promise((resolve, reject) => {
+  blob((err, name, e) => {
+    if (err) reject(err);
+
+    e.on('data', chunk => resolve({ key, value: chunk.toString('utf8').trim() }));
+
+    e.on('end', () => {
+      resolve({ key, value: '' });
+    });
+  });
+});
+
+const isFunctionOrNot = (key, value) => {
+  if (typeof value === 'function') {
+    return getBlobValue(key, value);
+  }
+
+  return Promise.resolve({ key, value });
+};
+
+const trareResultItem = async (item) => {
+  const newObj = {};
+  const listFields = Object.keys(item).map(key => isFunctionOrNot(key, item[key]));
+
+  try {
+    const newList = await Promise.all(listFields);
+
+    newList.forEach(({ key, value }) => {
+      newObj[key] = value;
+    });
+  } catch (e) {
+    console.error(e);
+  }
+
+  return newObj;
+};
+
+export const trateResult = result => (
+  Array.isArray(result) ?
+    Promise.all(result.map(item => Promise.resolve(trareResultItem(item)))) :
+    trareResultItem(result)
+);
