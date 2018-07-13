@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import Rollbar from 'rollbar';
+import expeditious from 'express-expeditious';
+import redis from 'expeditious-engine-redis';
 import routes from './routes';
 
 dotenv.config();
@@ -17,6 +19,14 @@ if (process.env.NODE_ENV === 'production') {
   });
 
   app.use(rollbar.errorHandler());
+
+  const cache = expeditious({
+    namespace: 'expresscache',
+    defaultTtl: '1 minute',
+    engine: redis(),
+  });
+
+  app.use(cache);
 }
 
 app.use(bodyParser.json());
