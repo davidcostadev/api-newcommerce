@@ -1,7 +1,7 @@
 /* eslint prefer-destructuring: "off" */
 
 import queryBuilder from './queryBuilder';
-import { revertAlias, getField } from './model';
+import { revertAlias, getField, trateResult } from './model';
 
 class Table {
   constructor(tableDefinition, db) {
@@ -50,13 +50,19 @@ class Table {
     this.logger();
 
     return new Promise(async (resolve) => {
-      const con = await this.db.con();
+      try {
+        const con = await this.db.con();
 
-      con.query(this.lastSql, (err, result) => {
-        if (err) throw err;
+        con.query(this.lastSql, async (err, result) => {
+          if (err) throw err;
 
-        resolve(result);
-      });
+          const newDate = await trateResult(result);
+
+          resolve(newDate);
+        });
+      } catch (e) {
+        console.error(e);
+      }
     });
   }
 
@@ -74,12 +80,17 @@ class Table {
     this.logger();
 
     return new Promise(async (resolve) => {
-      const con = await this.db.con();
-      con.query(this.lastSql, (err, result) => {
-        if (err) throw err;
+      try {
+        const con = await this.db.con();
 
-        resolve(result[0].COUNT);
-      });
+        con.query(this.lastSql, (err, result) => {
+          if (err) throw err;
+
+          resolve(result[0].COUNT);
+        });
+      } catch (e) {
+        console.error(e);
+      }
     });
   }
 
@@ -102,13 +113,19 @@ class Table {
     this.logger();
 
     return new Promise(async (resolve) => {
-      const con = await this.db.con();
+      try {
+        const con = await this.db.con();
 
-      con.query(this.lastSql, (err, result) => {
-        if (err) throw err;
+        con.query(this.lastSql, async (err, result) => {
+          if (err) throw err;
 
-        resolve(result.find((cur, index) => index === 0));
-      });
+          const newDate = await trateResult(result.find((cur, index) => index === 0));
+
+          resolve(newDate);
+        });
+      } catch (e) {
+        console.error(e);
+      }
     });
   }
 
