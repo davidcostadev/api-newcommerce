@@ -8,6 +8,7 @@
     "dev": "nodemon src/server.js --exec babel-node",
     "build": "babel src --out-dir dist",
     "test": "jest && codecov",
+    "jest": "jest",
     "jest:update": "jest --updateSnapshot",
     "jest:coverage": "jest --coverage",
     "coverage": "http-server ./coverage/lcov-report -o"
