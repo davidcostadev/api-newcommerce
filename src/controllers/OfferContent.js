@@ -19,7 +19,7 @@ const list = async ({ query, params }, res) => {
     idOffer: params.id,
   });
 
-  if (typeof where.id === 'undefined') {
+  if (typeof where.idOffer === 'undefined') {
     res.status(400).send(EXCEPTION_REQUEST_INVALID);
   }
 
