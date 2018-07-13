@@ -54,6 +54,8 @@ router.all(`${namespace}Tsvmwebsite/sp_web_busca_vertical_sel`, spWebBuscaVertic
 router.get(`${namespace}products/:id/images`, ProductImages.list);
 router.get(`${namespace}offers`, Offers.list);
 router.get(`${namespace}offers/:id`, Offers.get);
-router.get(`${namespace}offers/:id/content`, OfferContent.list);
+router.get(`${namespace}offers/:id/content`, OfferContent.byOffers);
+router.get(`${namespace}content`, OfferContent.list);
+router.get(`${namespace}content/:id`, OfferContent.get);
 
 export default router;

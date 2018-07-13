@@ -1,3 +1,5 @@
+import minify from 'htmlclean';
+
 export const listDefaultOptions = {
   where: {},
   filter: null,
@@ -69,11 +71,16 @@ const getBlobValue = (key, blob) => new Promise((resolve, reject) => {
   blob((err, name, e) => {
     if (err) reject(err);
 
-    e.on('data', chunk => resolve({ key, value: chunk.toString('utf8').trim() }));
+    e.on('data', chunk => resolve({
+      key,
+      value: compressHtml(chunk.toString('utf8').trim()),
+    }));
 
     e.on('end', () => {
       resolve({ key, value: '' });
     });
+
+    setTimeout(() => reject(new Error('TIMEOUT_BLOB_ERROR')), 1000 * 30);
   });
 });
 
@@ -107,3 +114,5 @@ export const trateResult = result => (
     Promise.all(result.map(item => Promise.resolve(trareResultItem(item)))) :
     trareResultItem(result)
 );
+
+export const compressHtml = string => minify(string);

@@ -13,7 +13,7 @@ class Database {
   }
 
   con() {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       if (this.db) {
         resolve(this.db);
         return;
@@ -28,7 +28,7 @@ class Database {
       };
 
       Firebird.attach(options, (err, db) => {
-        if (err) throw err;
+        if (err) reject(err);
 
         this.db = db;
 

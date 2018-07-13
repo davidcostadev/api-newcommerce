@@ -2,9 +2,9 @@ import selector from '../utils/selector';
 import { OfferContent } from '../models';
 import paginationParse from '../utils/pagination';
 import * as SelType from '../selectorTypes';
-import { EXCEPTION_REQUEST_INVALID } from '../errors';
+import { EXCEPTION_NOT_FOUND, EXCEPTION_REQUEST_INVALID } from '../errors';
 
-const list = async ({ query, params }, res) => {
+const list = async ({ query }, res) => {
   const {
     page,
     limit,
@@ -15,13 +15,7 @@ const list = async ({ query, params }, res) => {
 
   const where = selector({
     idOffer: SelType.idProjectType,
-  }, {
-    idOffer: params.id,
-  });
-
-  if (typeof where.idOffer === 'undefined') {
-    res.status(400).send(EXCEPTION_REQUEST_INVALID);
-  }
+  }, query);
 
   try {
     const data = await OfferContent.findAll({ where, limit, page });
@@ -38,6 +32,40 @@ const list = async ({ query, params }, res) => {
   }
 };
 
+const get = async ({ params }, res) => {
+  const {
+    id,
+  } = selector({
+    id: SelType.id,
+  }, params);
+
+  if (!id) {
+    res.status(400).send(EXCEPTION_REQUEST_INVALID);
+  }
+
+  try {
+    const entity = await OfferContent.findById(id);
+
+    if (!entity) {
+      res.status(404).send(EXCEPTION_NOT_FOUND);
+    }
+
+    res.json(entity);
+  } catch (e) {
+    console.error(e);
+    res.status(500).send(e);
+  }
+};
+
+const byOffers = ({ query, params }, res) => list({
+  query: {
+    ...query,
+    idOffer: params.id,
+  },
+}, res);
+
 export default {
   list,
+  get,
+  byOffers,
 };

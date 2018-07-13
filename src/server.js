@@ -9,16 +9,19 @@ dotenv.config();
 
 const app = express();
 
-const rollbar = Rollbar.init({
-  accessToken: process.env.ROLLBAR_TOKEN,
-  handleUncaughtExceptions: true,
-  verbose: false,
-});
+if (process.env.NODE_ENV === 'production') {
+  const rollbar = Rollbar.init({
+    accessToken: process.env.ROLLBAR_TOKEN,
+    handleUncaughtExceptions: true,
+    verbose: false,
+  });
+
+  app.use(rollbar.errorHandler());
+}
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan('combined'));
-app.use(rollbar.errorHandler());
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
