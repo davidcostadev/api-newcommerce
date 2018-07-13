@@ -34,6 +34,8 @@ router.get('/', (req, res) => {
           `${domain}${namespace}offers/:id`,
           `${domain}${namespace}offers/:id/content`,
           `${domain}${namespace}products/:id/images`,
+          `${domain}${namespace}content`,
+          `${domain}${namespace}content/:id`,
         ],
       },
     },
