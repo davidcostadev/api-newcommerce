@@ -2,19 +2,15 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-console.log(process.env)
-
 module.exports = {
   /**
    * Application configuration section
    * http://pm2.keymetrics.io/docs/usage/application-declaration/
    */
   apps: [
-
-    // First application
     {
       name: process.env.DEPLOY_NAME,
-      script: 'src/server.js',
+      script: 'dist/server.js',
       env: {
         COMMON_VARIABLE: 'true',
       },
@@ -38,6 +34,7 @@ module.exports = {
       'post-deploy': [
         'npm install',
         'npm run jest',
+        'npm run build',
         `pm2 reload ecosystem.config.js --env production --name ${process.env.DEPLOY_NAME}`,
       ].join(' && '),
     },
