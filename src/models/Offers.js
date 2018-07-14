@@ -21,7 +21,7 @@ const Offers = {
     'URL_IMAGEM as urlImage',
     'REGULAR_PRICE_REAL as regularPriceReal',
     'SALE_PRICE_REAL as salePriceReal',
-    'REGULAR_PRICE_DOLAR as RegularPriceDolar',
+    'REGULAR_PRICE_DOLAR as regularPriceDolar',
     'SALE_PRICE_DOLAR as salePriceDolar',
     'META_TITLE as metaTitle',
     'META_DESCRIPTION as metaDescription',
