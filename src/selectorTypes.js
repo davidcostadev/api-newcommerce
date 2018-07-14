@@ -22,6 +22,8 @@ export const idProjectType = numberType;
 
 export const nameSelType = stringType;
 
+export const slugSelType = stringType;
+
 export const emailSelType = stringType;
 
 export const valueSelType = floatType;
