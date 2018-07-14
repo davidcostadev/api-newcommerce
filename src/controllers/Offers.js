@@ -11,11 +11,16 @@ const list = async ({ query }, res) => {
   } = selector({
     limit: SelType.limitSelType,
     page: SelType.pageSelType,
-    idProject: SelType.idProjectType,
   }, query);
 
   const where = selector({
     idProject: SelType.idProjectType,
+    idFamily: SelType.id,
+    idGroup: SelType.id,
+    idSubGroup1: SelType.id,
+    idSubGroup2: SelType.id,
+    idSubGroup3: SelType.id,
+    slug: SelType.slugSelType,
   }, query);
 
   try {
