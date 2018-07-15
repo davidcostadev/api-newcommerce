@@ -10,6 +10,7 @@ import Categories from './controllers/Categories';
 import CategoriesRel from './controllers/CategoriesRel';
 import Offers from './controllers/Offers';
 import OfferContent from './controllers/OfferContent';
+import OffersRel from './controllers/OffersRel';
 import ProductImages from './controllers/ProductImages';
 
 dotenv.config();
@@ -68,6 +69,7 @@ router.get(`${namespace}content/:id`, OfferContent.get);
 router.get(`${namespace}offers`, Offers.list);
 router.get(`${namespace}offers/:id`, Offers.get);
 router.get(`${namespace}offers/:id/content`, OfferContent.byOffers);
+router.get(`${namespace}offersRel`, OffersRel.list);
 router.get(`${namespace}products/:id/images`, ProductImages.list);
 
 export default router;

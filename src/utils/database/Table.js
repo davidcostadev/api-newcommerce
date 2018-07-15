@@ -129,6 +129,38 @@ class Table {
     });
   }
 
+  procedure() {
+    this.lastSql = `select
+    *
+from
+    sp_oferta_relacionado_sel (904925 ,12 ,0 ,1 ,2)`;
+
+    const qb = queryBuilder()
+      .select(this.fields)
+      .procedure(this.tableName, [904925, 12, 0, 1, 2]);
+      // .limit(1);
+
+    this.lastSql = qb.toSql();
+
+    this.logger();
+
+    return new Promise(async (resolve) => {
+      try {
+        const con = await this.db.con();
+
+        con.query(this.lastSql, async (err, result) => {
+          if (err) throw err;
+
+          // const newDate = await trateResult(result.find((cur, index) => index === 0));
+
+          resolve(result);
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    });
+  }
+
   static name(name) {
     return name.split(' as ')
       .reverse()

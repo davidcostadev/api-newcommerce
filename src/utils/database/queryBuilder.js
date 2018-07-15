@@ -33,7 +33,16 @@ const select = sql => (fields = []) => (
 const table = sql => tableName => (
   query({
     ...sql,
-    table: `FROM\n\t${tableName}`,
+    table: `FROM\n\t${getFirstName(tableName)}`,
+  })
+);
+
+const getFirstName = name => name.split(' as ').find((cur, index) => index === 0);
+
+const procedure = sql => (procedureName, fields) => (
+  query({
+    ...sql,
+    table: `FROM\n\t${getFirstName(procedureName)}(${fields.join(', ')})`,
   })
 );
 
@@ -61,6 +70,7 @@ const orderSql = [
   'limit',
   'select',
   'table',
+  'procedure',
   'where',
   'order',
 ];
@@ -78,6 +88,7 @@ const query = (sql = {}) => ({
   first: first(sql),
   select: select(sql),
   table: table(sql),
+  procedure: procedure(sql),
   where: where(sql),
   limit: limit(sql),
   order: order(sql),
