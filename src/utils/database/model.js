@@ -71,13 +71,13 @@ const getBlobValue = (key, blob) => new Promise((resolve, reject) => {
   blob((err, name, e) => {
     if (err) reject(err);
 
-    e.on('data', chunk => resolve({
-      key,
-      value: compressHtml(chunk.toString('utf8').trim()),
-    }));
+    let body = '';
+    e.on('data', (chunk) => {
+      body += chunk.toString('utf8');
+    });
 
     e.on('end', () => {
-      resolve({ key, value: '' });
+      resolve({ key, value: compressHtml(body) });
     });
 
     setTimeout(() => reject(new Error('TIMEOUT_BLOB_ERROR')), 1000 * 30);
