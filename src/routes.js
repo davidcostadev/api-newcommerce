@@ -6,9 +6,11 @@ import spWebBuscaMaisVendidosSel from './controllers/sp_web_busca_maisvendidos_s
 import spWebsiteUrlSel from './controllers/sp_website_url_sel';
 import spWebBuscaLandingpageSel from './controllers/sp_web_busca_landingpage_sel';
 import spWebBuscaVerticalSel from './controllers/sp_web_busca_vertical_sel';
-import ProductImages from './controllers/ProductImages';
+import Categories from './controllers/Categories';
+import CategoriesRel from './controllers/CategoriesRel';
 import Offers from './controllers/Offers';
 import OfferContent from './controllers/OfferContent';
+import ProductImages from './controllers/ProductImages';
 
 dotenv.config();
 
@@ -30,6 +32,10 @@ router.get('/', (req, res) => {
           `${domain}${namespace}Tsvmwebsite/sp_website_url_sel`,
           `${domain}${namespace}Tsvmwebsite/sp_web_busca_landingpage_sel`,
           `${domain}${namespace}Tsvmwebsite/sp_web_busca_vertical_sel`,
+          `${domain}${namespace}categories`,
+          `${domain}${namespace}categories/:id`,
+          `${domain}${namespace}categoriesRel`,
+          `${domain}${namespace}categoriesRel/:id`,
           `${domain}${namespace}offers`,
           `${domain}${namespace}offers/:id`,
           `${domain}${namespace}offers/:id/content`,
@@ -53,11 +59,15 @@ router.all(`${namespace}Tsvmwebsite/sp_website_url_sel`, spWebsiteUrlSel);
 router.all(`${namespace}Tsvmwebsite/sp_web_busca_landingpage_sel`, spWebBuscaLandingpageSel);
 router.all(`${namespace}Tsvmwebsite/sp_web_busca_vertical_sel`, spWebBuscaVerticalSel);
 
-router.get(`${namespace}products/:id/images`, ProductImages.list);
+router.get(`${namespace}categories`, Categories.list);
+router.get(`${namespace}categories/:id`, Categories.get);
+router.get(`${namespace}categoriesRel`, CategoriesRel.list);
+router.get(`${namespace}categoriesRel/:id`, CategoriesRel.get);
+router.get(`${namespace}content`, OfferContent.list);
+router.get(`${namespace}content/:id`, OfferContent.get);
 router.get(`${namespace}offers`, Offers.list);
 router.get(`${namespace}offers/:id`, Offers.get);
 router.get(`${namespace}offers/:id/content`, OfferContent.byOffers);
-router.get(`${namespace}content`, OfferContent.list);
-router.get(`${namespace}content/:id`, OfferContent.get);
+router.get(`${namespace}products/:id/images`, ProductImages.list);
 
 export default router;
