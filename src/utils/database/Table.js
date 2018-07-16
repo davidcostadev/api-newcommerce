@@ -1,17 +1,24 @@
 /* eslint prefer-destructuring: "off" */
 
 import queryBuilder from './queryBuilder';
-import { revertAlias, getField, trateResult } from './model';
+import {
+  revertAlias,
+  getField,
+  trateResult,
+  getArgs,
+} from './model';
 
 class Table {
   constructor(tableDefinition, db) {
     this.tableName = tableDefinition.tableName;
     this.fields = tableDefinition.fields;
+    this.args = tableDefinition.args;
     this.id = tableDefinition.id;
 
     this.db = db;
 
     this.lastSql = '';
+    this.count = null;
   }
 
   findAll(query = {}) {
@@ -129,16 +136,10 @@ class Table {
     });
   }
 
-  procedure() {
-    this.lastSql = `select
-    *
-from
-    sp_oferta_relacionado_sel (904925 ,12 ,0 ,1 ,2)`;
-
+  procedure({ args }) {
     const qb = queryBuilder()
       .select(this.fields)
-      .procedure(this.tableName, [904925, 12, 0, 1, 2]);
-      // .limit(1);
+      .procedure(this.tableName, getArgs(this.args, args));
 
     this.lastSql = qb.toSql();
 
@@ -151,14 +152,22 @@ from
         con.query(this.lastSql, async (err, result) => {
           if (err) throw err;
 
-          // const newDate = await trateResult(result.find((cur, index) => index === 0));
+          const newDate = await trateResult(result);
 
-          resolve(result);
+          if (newDate.length && typeof newDate[0].count !== 'undefined') {
+            this.count = newDate[0].count;
+          }
+
+          resolve(newDate);
         });
       } catch (e) {
         console.error(e);
       }
     });
+  }
+
+  procedureCount() {
+    return this.count;
   }
 
   static name(name) {
