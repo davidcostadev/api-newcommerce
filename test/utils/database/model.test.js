@@ -68,6 +68,7 @@ describe('model utils', () => {
     });
 
     it('get error of timeout', async () => {
+      jest.setTimeout(11000);
       const field = (callback) => {
         callback(false, key, streamMock);
       };
