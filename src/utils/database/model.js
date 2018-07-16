@@ -50,15 +50,23 @@ export const clearData = (data, scheme) => {
   return clearItem(scheme)(data);
 };
 
-export const getField = (fields, key) => fields.find(field => field
-  .split(' as ').reverse().find((cur, index) => index === 0) === key)
-  .split(' as ').find((cur, index) => index === 0);
+export const getField = (fields, key) => {
+  const fieldFromKey = fields.find(field => field.split(' as ')
+    .reverse().find((cur, index) => index === 0) === key);
+
+  if (fieldFromKey) {
+    return fieldFromKey.split(' as ').find((cur, index) => index === 0);
+  }
+
+  return key;
+};
 
 export const revertAlias = (where, fields) => {
   const newObj = {};
+
   Object.keys(where).forEach((key) => {
     if (typeof where[key] === 'object') {
-      revertAlias(where[key], fields);
+      newObj[getField(fields, key)] = revertAlias(where[key], fields);
     } else {
       newObj[getField(fields, key)] = where[key];
     }
@@ -67,9 +75,9 @@ export const revertAlias = (where, fields) => {
   return newObj;
 };
 
-const getBlobValue = (key, blob) => new Promise((resolve, reject) => {
+export const getBlobValue = (key, blob) => new Promise((resolve, reject) => {
   blob((err, name, e) => {
-    if (err) reject(err);
+    if (err) reject(new Error(`getBlobValue: \`${name}\` "${err.message}"`));
 
     let body = '';
     e.on('data', (chunk) => {
@@ -80,7 +88,7 @@ const getBlobValue = (key, blob) => new Promise((resolve, reject) => {
       resolve({ key, value: compressHtml(body) });
     });
 
-    setTimeout(() => reject(new Error('TIMEOUT_BLOB_ERROR')), 1000 * 30);
+    setTimeout(() => reject(new Error(`getBlobValue: \`${name}\` "TIMEOUT_BLOB_ERROR"`)), 1000 * 1);
   });
 });
 
@@ -103,7 +111,7 @@ const trareResultItem = async (item) => {
       newObj[key] = value;
     });
   } catch (e) {
-    console.error(e);
+    throw e;
   }
 
   return newObj;

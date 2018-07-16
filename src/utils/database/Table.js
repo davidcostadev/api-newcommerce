@@ -56,19 +56,21 @@ class Table {
 
     this.logger();
 
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve, reject) => {
       try {
         const con = await this.db.con();
 
         con.query(this.lastSql, async (err, result) => {
-          if (err) throw err;
+          if (err) {
+            reject(err);
+          } else {
+            const newDate = await trateResult(result);
 
-          const newDate = await trateResult(result);
-
-          resolve(newDate);
+            resolve(newDate);
+          }
         });
       } catch (e) {
-        console.error(e);
+        reject(e);
       }
     });
   }
@@ -86,17 +88,17 @@ class Table {
 
     this.logger();
 
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve, reject) => {
       try {
         const con = await this.db.con();
 
         con.query(this.lastSql, (err, result) => {
-          if (err) throw err;
+          if (err) reject(err);
 
           resolve(result[0].COUNT);
         });
       } catch (e) {
-        console.error(e);
+        reject(e);
       }
     });
   }
@@ -119,19 +121,21 @@ class Table {
 
     this.logger();
 
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve, reject) => {
       try {
         const con = await this.db.con();
 
         con.query(this.lastSql, async (err, result) => {
-          if (err) throw err;
+          if (err) {
+            reject(err);
+          } else {
+            const newDate = await trateResult(result.find((cur, index) => index === 0));
 
-          const newDate = await trateResult(result.find((cur, index) => index === 0));
-
-          resolve(newDate);
+            resolve(newDate);
+          }
         });
       } catch (e) {
-        console.error(e);
+        reject(e);
       }
     });
   }
@@ -145,23 +149,25 @@ class Table {
 
     this.logger();
 
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve, reject) => {
       try {
         const con = await this.db.con();
 
         con.query(this.lastSql, async (err, result) => {
-          if (err) throw err;
+          if (err) {
+            reject(err);
+          } else {
+            const newDate = await trateResult(result);
 
-          const newDate = await trateResult(result);
+            if (newDate.length && typeof newDate[0].count !== 'undefined') {
+              this.count = newDate[0].count;
+            }
 
-          if (newDate.length && typeof newDate[0].count !== 'undefined') {
-            this.count = newDate[0].count;
+            resolve(newDate);
           }
-
-          resolve(newDate);
         });
       } catch (e) {
-        console.error(e);
+        reject(e);
       }
     });
   }
