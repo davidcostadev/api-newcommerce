@@ -116,3 +116,5 @@ export const trateResult = result => (
 );
 
 export const compressHtml = string => minify(string);
+
+export const getArgs = (scheme, values) => scheme.map(key => values[key]);

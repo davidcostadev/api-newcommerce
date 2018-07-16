@@ -32,6 +32,13 @@ const OffersRel = {
     'FLAG_FREESHIPPING as freeShipping',
     'PS_REGISTROS_COUNT as count',
   ],
+  args: [
+    'idOffer',
+    'limit',
+    'page',
+    'idColumn',
+    'direction',
+  ],
 };
 
 export default OffersRel;

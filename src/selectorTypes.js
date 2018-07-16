@@ -1,14 +1,14 @@
 import * as validate from './utils/validate';
 
-const stringType = {
+export const stringType = {
   validation: validate.string,
 };
 
-const numberType = {
+export const numberType = {
   validation: validate.number,
 };
 
-const floatType = {
+export const floatType = {
   validation: validate.float,
 };
 

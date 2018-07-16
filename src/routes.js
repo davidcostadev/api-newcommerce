@@ -40,6 +40,7 @@ router.get('/', (req, res) => {
           `${domain}${namespace}offers`,
           `${domain}${namespace}offers/:id`,
           `${domain}${namespace}offers/:id/content`,
+          `${domain}${namespace}offers/:id/rel`,
           `${domain}${namespace}products/:id/images`,
           `${domain}${namespace}content`,
           `${domain}${namespace}content/:id`,
@@ -69,7 +70,7 @@ router.get(`${namespace}content/:id`, OfferContent.get);
 router.get(`${namespace}offers`, Offers.list);
 router.get(`${namespace}offers/:id`, Offers.get);
 router.get(`${namespace}offers/:id/content`, OfferContent.byOffers);
-router.get(`${namespace}offersRel`, OffersRel.list);
+router.get(`${namespace}offers/:id/rel`, OffersRel.byOffers);
 router.get(`${namespace}products/:id/images`, ProductImages.list);
 
 export default router;
