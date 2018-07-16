@@ -88,7 +88,9 @@ export const getBlobValue = (key, blob) => new Promise((resolve, reject) => {
       resolve({ key, value: compressHtml(body) });
     });
 
-    setTimeout(() => reject(new Error(`getBlobValue: \`${name}\` "TIMEOUT_BLOB_ERROR"`)), 1000 * 1);
+    setTimeout(() => {
+      reject(new Error(`getBlobValue: \`${name}\` "TIMEOUT_BLOB_ERROR"`));
+    }, 1000 * 10);
   });
 });
 
