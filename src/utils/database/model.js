@@ -137,3 +137,18 @@ export const escapeValues = v => (
 export const escapeKeys = v => `"${v}"`;
 
 export const getArgs = (scheme, values) => scheme.map(key => escapeValues(values[key]));
+
+export const tratePageZero = obj => Object.keys(obj).map(key => (
+  key === 'page' ?
+    ({
+      key: 'page',
+      value: obj[key] - 1,
+    }) : ({
+      key,
+      value: obj[key],
+    })
+)).reduce((acc, cur) => {
+  acc[cur.key] = cur.value;
+
+  return acc;
+}, {});
