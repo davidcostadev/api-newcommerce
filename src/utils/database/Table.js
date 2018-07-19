@@ -6,6 +6,7 @@ import {
   getField,
   trateResult,
   getArgs,
+  tratePageZero,
 } from './model';
 
 class Table {
@@ -143,7 +144,7 @@ class Table {
   procedure({ args }) {
     const qb = queryBuilder()
       .select(this.fields)
-      .procedure(this.tableName, getArgs(this.args, args));
+      .procedure(this.tableName, getArgs(this.args, tratePageZero(args)));
 
     this.lastSql = qb.toSql();
 
