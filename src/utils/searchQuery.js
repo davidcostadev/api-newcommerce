@@ -2,16 +2,16 @@ const isWordTrust = word => word.length >= 4;
 
 const check = query => query.split(' ').map(isWordTrust);
 
+const isLimited = (arr, limit = 10) => arr.length <= limit;
+
 export const reMount = (q) => {
   if (typeof q === 'undefined' && !q.length) return [];
-
-  console.log(q)
 
   const checked = check(q);
 
   return checked.reduce((acc, cur, index) => {
     if (typeof q.split(' ')[index] === 'undefined') return acc;
-    if (cur) {
+    if (cur && isLimited(acc)) {
       acc.push(q.split(' ')[index]);
     } else if (acc.length === 0) {
       acc.push(q.split(' ')[index]);
