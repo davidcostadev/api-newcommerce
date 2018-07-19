@@ -1,8 +1,7 @@
 /* eslint no-use-before-define: "off" */
+import { escapeValues } from './model';
 
-const trateString = value => (
-  typeof value === 'string' ? `'${value}'` : value
-);
+const trateString = escapeValues;
 
 const opAND = fields => Object.keys(fields)
   .map(field => opLogic(field, fields[field]))
