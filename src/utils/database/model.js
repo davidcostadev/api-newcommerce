@@ -1,4 +1,5 @@
 import minify from 'htmlclean';
+import { escape } from 'node-firebird';
 
 export const listDefaultOptions = {
   where: {},
@@ -127,4 +128,12 @@ export const trateResult = result => (
 
 export const compressHtml = string => minify(string);
 
-export const getArgs = (scheme, values) => scheme.map(key => values[key]);
+const isNumeric = n => Number.isInteger(parseInt(n, 10));
+
+export const escapeValues = v => (
+  isNumeric(v) ? parseInt(v, 10) : escape(v)
+);
+
+export const escapeKeys = v => `"${v}"`;
+
+export const getArgs = (scheme, values) => scheme.map(key => escapeValues(values[key]));

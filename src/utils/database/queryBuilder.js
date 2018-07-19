@@ -1,13 +1,14 @@
 /* eslint no-use-before-define: "off" */
 
 import whereBuilder from './where';
+import { escapeKeys } from './model';
 
 const fieldsQuery = fields => fields
   .map(field => field
     .split(' as ')
     .map(each => each.trim())
     .map((curr, index) => (
-      index === 1 ? `"${curr}"` : curr
+      index === 1 ? escapeKeys(curr) : curr
     ))
     .join(' as '))
   .join(', ');
