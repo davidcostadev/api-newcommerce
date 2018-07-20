@@ -1,6 +1,6 @@
 import selector from '../utils/selector';
-import { Offers } from '../models/firebird';
-import { EXCEPTION_NOT_FOUND, EXCEPTION_REQUEST_INVALID } from '../errors';
+import { Users } from '../models/sequelize';
+// import { EXCEPTION_NOT_FOUND, EXCEPTION_REQUEST_INVALID } from '../errors';
 import paginationParse from '../utils/pagination';
 import * as SelType from '../selectorTypes';
 
@@ -24,8 +24,8 @@ const list = async ({ query }, res) => {
   }, query);
 
   try {
-    const data = await Offers.findAll({ where, limit, page });
-    const count = await Offers.findAndCountAll({ where });
+    const data = await Users.findAll({ where, limit, page });
+    const { count } = await Users.findAndCountAll({ where });
     const pagination = paginationParse(count, page, limit);
 
     res.json({
@@ -38,32 +38,32 @@ const list = async ({ query }, res) => {
   }
 };
 
-const get = async ({ params }, res) => {
-  const {
-    id,
-  } = selector({
-    id: SelType.id,
-  }, params);
+// const get = async ({ params }, res) => {
+//   const {
+//     id,
+//   } = selector({
+//     id: SelType.id,
+//   }, params);
 
-  if (!id) {
-    res.status(400).send(EXCEPTION_REQUEST_INVALID);
-  }
+//   if (!id) {
+//     res.status(400).send(EXCEPTION_REQUEST_INVALID);
+//   }
 
-  try {
-    const entity = await Offers.findById(id);
+//   try {
+//     const entity = await Offers.findById(id);
 
-    if (!entity) {
-      res.status(404).send(EXCEPTION_NOT_FOUND);
-    }
+//     if (!entity) {
+//       res.status(404).send(EXCEPTION_NOT_FOUND);
+//     }
 
-    res.json(entity);
-  } catch (e) {
-    console.error(e);
-    res.status(500).send(e);
-  }
-};
+//     res.json(entity);
+//   } catch (e) {
+//     console.error(e);
+//     res.status(500).send(e);
+//   }
+// };
 
 export default {
   list,
-  get,
+  // get,
 };

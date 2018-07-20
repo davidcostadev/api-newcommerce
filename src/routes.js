@@ -14,6 +14,7 @@ import OfferContent from './controllers/OfferContent';
 import OffersRel from './controllers/OffersRel';
 import ProductImages from './controllers/ProductImages';
 import Search from './controllers/Search';
+import User from './controllers/User';
 
 dotenv.config();
 
@@ -48,6 +49,7 @@ router.get('/', (req, res) => {
           `${domain}${namespace}content`,
           `${domain}${namespace}content/:id`,
           `${domain}${namespace}search`,
+          `${domain}${namespace}user`,
         ],
       },
     },
@@ -78,5 +80,6 @@ router.get(`${namespace}offers/:id/content`, OfferContent.byOffers);
 router.get(`${namespace}offers/:id/rel`, OffersRel.byOffers);
 router.get(`${namespace}products/:id/images`, ProductImages.list);
 router.get(`${namespace}search`, Search.list);
+router.get(`${namespace}User`, User.list);
 
 export default router;

@@ -1,5 +1,5 @@
 import selector from '../utils/selector';
-import { Menu } from '../models';
+import { Menu } from '../models/firebird';
 import * as SelType from '../selectorTypes';
 import paginationParse from '../utils/pagination';
 

@@ -1,5 +1,5 @@
 import selector from '../utils/selector';
-import { ProductImages } from '../models';
+import { ProductImages } from '../models/firebird';
 import paginationParse from '../utils/pagination';
 import * as SelType from '../selectorTypes';
 

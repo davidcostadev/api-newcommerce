@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
-import Database from '../utils/database/Database';
-import Table from '../utils/database/Table';
+import Database from '../../utils/database/Database';
+import Table from '../../utils/database/Table';
 
 dotenv.config();
 
