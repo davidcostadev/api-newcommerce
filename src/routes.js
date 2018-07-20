@@ -80,6 +80,7 @@ router.get(`${namespace}offers/:id/content`, OfferContent.byOffers);
 router.get(`${namespace}offers/:id/rel`, OffersRel.byOffers);
 router.get(`${namespace}products/:id/images`, ProductImages.list);
 router.get(`${namespace}search`, Search.list);
-router.get(`${namespace}User`, User.list);
+router.get(`${namespace}user`, User.list);
+router.post(`${namespace}register`, User.register);
 
 export default router;
