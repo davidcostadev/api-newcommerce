@@ -1,7 +1,5 @@
-import bcrypt from 'bcrypt';
 import selector from '../utils/selector';
 import { Users } from '../models/sequelize';
-import { EXCEPTION_UNPROCESSABLE_ENTITY } from '../errors';
 import paginationParse from '../utils/pagination';
 import * as SelType from '../selectorTypes';
 
@@ -39,68 +37,6 @@ const list = async ({ query }, res) => {
   }
 };
 
-const register = async ({ body }, res) => {
-  try {
-    const entity = await Users.create({
-      ...body,
-      password: bcrypt.hashSync(body.password, 10),
-    });
-
-    entity.password = undefined;
-
-    res.json(entity);
-  } catch (e) {
-    console.log(e)
-    res.status(400).send(new Error(EXCEPTION_UNPROCESSABLE_ENTITY));
-  }
-  // var newUser = new Users(req.body);
-  // newUser.hash_password = bcrypt.hashSync(req.body.password, 10);
-  // newUser.save(function(err, user) {
-  //   if (err) {
-  //     return res.status(400).send({
-  //       message: err
-  //     });
-  //   } else {
-  //     user.hash_password = undefined;
-  //     return res.json(user);
-  //   }
-  // });
-}
-
-const signIn = (req, res) => {
-
-}
-
-const loginRequired = (req, res) => {}
-
-
-// const get = async ({ params }, res) => {
-//   const {
-//     id,
-//   } = selector({
-//     id: SelType.id,
-//   }, params);
-
-//   if (!id) {
-//     res.status(400).send(EXCEPTION_REQUEST_INVALID);
-//   }
-
-//   try {
-//     const entity = await Offers.findById(id);
-
-//     if (!entity) {
-//       res.status(404).send(EXCEPTION_NOT_FOUND);
-//     }
-
-//     res.json(entity);
-//   } catch (e) {
-//     console.error(e);
-//     res.status(500).send(e);
-//   }
-// };
-
 export default {
   list,
-  register,
-  // get,
 };

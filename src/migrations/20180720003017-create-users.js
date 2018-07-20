@@ -8,12 +8,19 @@ module.exports = {
     },
     name: {
       type: Sequelize.STRING,
+      allowNull: false,
     },
     email: {
       type: Sequelize.STRING,
+      allowNull: false,
+      unique: true,
     },
     password: {
       type: Sequelize.STRING,
+    },
+    enabled: {
+      type: Sequelize.BOOLEAN,
+      default: false,
     },
     createdAt: {
       allowNull: false,

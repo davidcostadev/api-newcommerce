@@ -1,12 +1,16 @@
+const bcrypt = require('bcrypt');
+const config = require('../../config/envs');
+
 const timestamp = {
   createdAt: new Date(),
   updatedAt: new Date(),
 };
 
 const user = {
-  name: 'David Costa',
-  email: 'davidcostadev@gmail.com',
-  password: 'P@ssword123',
+  name: 'Admin',
+  email: 'admin@newcommerce.com',
+  password: bcrypt.hashSync('P@ssword123', config.BCRYPT_SALT),
+  enabled: true,
   ...timestamp,
 };
 

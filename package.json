@@ -45,6 +45,7 @@
     "htmlclean": "^3.0.8",
     "iconv-lite": "^0.4.23",
     "jest": "^23.1.0",
+    "jsonwebtoken": "^8.3.0",
     "morgan": "^1.9.0",
     "mysql2": "^1.5.3",
     "node-firebird": "^0.8.6",
