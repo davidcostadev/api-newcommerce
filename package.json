@@ -15,6 +15,7 @@
     "coverage": "http-server ./coverage/lcov-report -o",
     "pretest": "NODE_ENV=test npm run sequelize db:migrate",
     "pretest:create": "NODE_ENV=test npm run sequelize db:create",
+    "pre-build": "NODE_ENV=production npm run sequelize db:migrate",
     "deploy": "pm2 deploy production"
   },
   "repository": {
