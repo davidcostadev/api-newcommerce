@@ -13,13 +13,7 @@ const list = async ({ query }, res) => {
   }, query);
 
   const where = selector({
-    idProject: SelType.idProjectType,
-    idFamily: SelType.id,
-    idGroup: SelType.id,
-    idSubGroup1: SelType.id,
-    idSubGroup2: SelType.id,
-    idSubGroup3: SelType.id,
-    slug: SelType.slugSelType,
+    email: SelType.stringType,
   }, query);
 
   try {
