@@ -1,15 +1,20 @@
 import bcrypt from 'bcrypt';
 import { EXCEPTION_UNPROCESSABLE_ENTITY } from '../errors';
 import { authenticate, getUserByEmail, addUser } from '../services/auth';
+import { Users } from '../models/sequelize';
 import config from '../../config/envs';
 
 const login = async (req, res) => {
   try {
-    const token = await authenticate(req.body);
+    const {
+      token,
+      payload,
+    } = await authenticate(Users)(req.body);
 
     res.json({
       success: true,
       token,
+      payload,
     });
   } catch (e) {
     res.status(401).json({
@@ -21,7 +26,7 @@ const login = async (req, res) => {
 
 const register = async ({ body }, res) => {
   try {
-    const user = await getUserByEmail(body.email);
+    const user = await getUserByEmail(Users)(body.email);
 
     if (user) {
       res.json({
@@ -36,7 +41,7 @@ const register = async ({ body }, res) => {
       password: bcrypt.hashSync(body.password, config.BCRYPT_SALT),
     };
 
-    const entity = await addUser(newUser);
+    const entity = await addUser(Users)(newUser);
 
     if (entity) {
       res.json({
