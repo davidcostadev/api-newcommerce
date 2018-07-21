@@ -33,6 +33,7 @@ module.exports = {
       path: process.env.DEPLOY_PATH,
       'post-deploy': [
         'npm install',
+        'npm run pretest',
         'npm run jest',
         'npm run build',
         `pm2 reload ecosystem.config.js --env production --name ${process.env.DEPLOY_NAME}`,
