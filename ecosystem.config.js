@@ -36,7 +36,7 @@ module.exports = {
         'npm run pretest',
         'npm run jest',
         'npm run build',
-        'npm run sequelize db:migration',
+        'npm run sequelize db:migrate',
         `pm2 reload ecosystem.config.js --env production --name ${process.env.DEPLOY_NAME}`,
       ].join(' && '),
     },
