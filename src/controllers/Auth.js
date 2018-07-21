@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { EXCEPTION_UNPROCESSABLE_ENTITY } from '../errors';
+import { EXCEPTION_UNPROCESSABLE_ENTITY, EXCEPTION_EMAIL_DUPLICATED } from '../errors';
 import { authenticate, getUserByEmail, addUser } from '../services/auth';
 import { Users } from '../models/sequelize';
 import config from '../../config/envs';
@@ -29,10 +29,7 @@ const register = async ({ body }, res) => {
     const user = await getUserByEmail(Users)(body.email);
 
     if (user) {
-      res.json({
-        success: false,
-        message: 'Registration failed. User with this email already registered.',
-      });
+      throw new Error(EXCEPTION_EMAIL_DUPLICATED);
     }
 
     const newUser = {
@@ -49,8 +46,15 @@ const register = async ({ body }, res) => {
       });
     }
   } catch (e) {
-    console.log(e);
-    res.status(400).send(new Error(EXCEPTION_UNPROCESSABLE_ENTITY));
+    if (e.message === EXCEPTION_EMAIL_DUPLICATED) {
+      res.status(400).json({
+        success: false,
+        message: EXCEPTION_EMAIL_DUPLICATED,
+      });
+    } else {
+      console.error(e);
+      res.status(400).send(new Error(EXCEPTION_UNPROCESSABLE_ENTITY));
+    }
   }
 };
 
