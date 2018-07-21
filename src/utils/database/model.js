@@ -1,4 +1,6 @@
 import minify from 'htmlclean';
+import path from 'path';
+import fs from 'fs';
 import { escape } from 'node-firebird';
 
 export const listDefaultOptions = {
@@ -152,3 +154,8 @@ export const tratePageZero = obj => Object.keys(obj).map(key => (
 
   return acc;
 }, {});
+
+export const getFilesModels = (basename, dirname) => fs
+  .readdirSync(dirname)
+  .filter(file => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
+  .map(file => path.join(dirname, file));

@@ -42,11 +42,18 @@ describe('Accounts Service should', () => {
         findAll: jest.fn().mockReturnValue(Promise.reject(new Error('Async error'))),
       };
 
+      const { error } = console;
+      console.error = jest.fn();
+
       try {
         await Service.list(reqMock, modelMock, {});
       } catch (e) {
         expect(e.message).toBe(EXCEPTION_NOT_FOUND);
       }
+      expect(console.error).toBeCalled();
+      expect(console.error.mock.calls[0][0].message).toBe('Async error');
+
+      console.error = error;
     });
 
     it('get', async () => {
