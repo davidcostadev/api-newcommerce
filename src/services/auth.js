@@ -2,7 +2,10 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import config from '../../config/envs';
 
-export const addUser = Model => user => Model.create(user);
+export const addUser = Model => user => Model.create({
+  ...user,
+  password: bcrypt.hashSync(user.password, config.BCRYPT_SALT),
+});
 
 export const getUserByEmail = Model => email => Model.findOne({ where: { email } });
 

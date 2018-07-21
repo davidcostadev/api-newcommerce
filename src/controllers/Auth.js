@@ -1,8 +1,6 @@
-import bcrypt from 'bcrypt';
 import { EXCEPTION_UNPROCESSABLE_ENTITY, EXCEPTION_EMAIL_DUPLICATED } from '../errors';
 import { authenticate, getUserByEmail, addUser } from '../services/auth';
-import { Users } from '../models/sequelize';
-import config from '../../config/envs';
+import { Users } from '../models';
 
 const login = async (req, res) => {
   try {
@@ -32,13 +30,7 @@ const register = async ({ body }, res) => {
       throw new Error(EXCEPTION_EMAIL_DUPLICATED);
     }
 
-    const newUser = {
-      name: body.name,
-      email: body.email,
-      password: bcrypt.hashSync(body.password, config.BCRYPT_SALT),
-    };
-
-    const entity = await addUser(Users)(newUser);
+    const entity = await addUser(Users)(body);
 
     if (entity) {
       res.json({

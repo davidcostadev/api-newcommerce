@@ -1,5 +1,5 @@
 import selector from '../utils/selector';
-import { OffersRel } from '../models/firebird';
+import { OffersRel } from '../models';
 import * as SelType from '../selectorTypes';
 import paginationParse from '../utils/pagination';
 

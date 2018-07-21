@@ -1,5 +1,5 @@
 import selector from '../utils/selector';
-import { Search } from '../models/firebird';
+import { Search } from '../models';
 import { createArgsWord, reMount } from '../utils/searchQuery';
 import * as SelType from '../selectorTypes';
 import paginationParse from '../utils/pagination';

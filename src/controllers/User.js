@@ -1,5 +1,5 @@
 import selector from '../utils/selector';
-import { Users } from '../models/sequelize';
+import { Users } from '../models';
 import paginationParse from '../utils/pagination';
 import * as SelType from '../selectorTypes';
 

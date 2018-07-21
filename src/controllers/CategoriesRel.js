@@ -1,5 +1,5 @@
 import selector from '../utils/selector';
-import { CategoriesRel } from '../models/firebird';
+import { CategoriesRel } from '../models';
 import paginationParse from '../utils/pagination';
 import * as SelType from '../selectorTypes';
 import { EXCEPTION_NOT_FOUND, EXCEPTION_REQUEST_INVALID } from '../errors';

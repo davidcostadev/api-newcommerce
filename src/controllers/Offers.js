@@ -1,5 +1,5 @@
 import selector from '../utils/selector';
-import { Offers } from '../models/firebird';
+import { Offers } from '../models';
 import { EXCEPTION_NOT_FOUND, EXCEPTION_REQUEST_INVALID } from '../errors';
 import paginationParse from '../utils/pagination';
 import * as SelType from '../selectorTypes';
