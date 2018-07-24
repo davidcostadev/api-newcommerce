@@ -54,6 +54,8 @@ router.get('/', (req, res) => {
           `${domain}${namespace}content/:id`,
           `${domain}${namespace}search`,
           `${domain}${namespace}users`,
+          `${domain}${namespace}projects`,
+          `${domain}${namespace}configs`,
           `${domain}${namespace}auth/register`,
           `${domain}${namespace}auth/login`,
         ],
