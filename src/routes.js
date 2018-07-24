@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import dotenv from 'dotenv';
 import middleware from './middleware';
+import resources from './utils/resources';
 import spWebWebsiteMenuSel from './controllers/sp_web_website_menu_sel';
 import spWebBuscaMenuSel from './controllers/sp_web_busca_home_sel';
 import spWebBuscaMaisVendidosSel from './controllers/sp_web_busca_maisvendidos_sel';
@@ -16,6 +17,7 @@ import OfferContent from './controllers/OfferContent';
 import OffersRel from './controllers/OffersRel';
 import ProductImages from './controllers/ProductImages';
 import Search from './controllers/Search';
+import Projects from './controllers/Projects';
 import User from './controllers/User';
 
 dotenv.config();
@@ -52,6 +54,8 @@ router.get('/', (req, res) => {
           `${domain}${namespace}content/:id`,
           `${domain}${namespace}search`,
           `${domain}${namespace}users`,
+          `${domain}${namespace}projects`,
+          `${domain}${namespace}configs`,
           `${domain}${namespace}auth/register`,
           `${domain}${namespace}auth/login`,
         ],
@@ -87,5 +91,11 @@ router.get(`${namespace}offers/:id/rel`, OffersRel.byOffers);
 router.get(`${namespace}products/:id/images`, ProductImages.list);
 router.get(`${namespace}search`, Search.list);
 router.get(`${namespace}users`, middleware.checkAuth, User.list);
+
+resources(`${namespace}projects`, {
+  router,
+  controller: Projects,
+  middleware: middleware.checkAuth,
+});
 
 export default router;

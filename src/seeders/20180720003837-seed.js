@@ -14,9 +14,28 @@ const user = {
   ...timestamp,
 };
 
+const newcommerceProject = {
+  name: 'newCommerce',
+  enabled: true,
+  ...timestamp,
+};
+
+const configProject = {
+  name: 'BASIC',
+  value: JSON.stringify({
+    theme: 'default',
+  }),
+  ...timestamp,
+};
+
 module.exports = {
   up: async (queryInterface) => {
     await queryInterface.bulkInsert('Users', [user]);
+    const ProjectId = await queryInterface.bulkInsert('Projects', [newcommerceProject]);
+
+    configProject.ProjectId = ProjectId;
+
+    await queryInterface.bulkInsert('Configs', [configProject]);
   },
   down: (queryInterface) => {
     queryInterface.bulkDelete('Users');
